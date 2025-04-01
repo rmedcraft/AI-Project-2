@@ -6,9 +6,9 @@ public class Graph : MonoBehaviour {
     public Node[,] nodes; //Array of nodes
     public List<Node> walls = new List<Node>();
 
-    int[,] m_mapData;
-    int m_width = -1;
-    int m_height = -1;
+    int[,] mapData;
+    int width = -1;
+    int height = -1;
 
     public List<Node> aliveNodes = new List<Node>();
     public List<Node> deadNodes = new List<Node>();
@@ -29,19 +29,19 @@ public class Graph : MonoBehaviour {
     }
 
     public int getWidth() {
-        return m_width;
+        return width;
     }
     public int getHeight() {
-        return m_height;
+        return height;
     }
 
     public void Init(int[,] mapData) {
-        m_mapData = mapData;
-        m_width = mapData.GetLength(0);
-        m_height = mapData.GetLength(1);
-        nodes = new Node[m_width, m_height];
-        for (int c = 0; c < m_height; c++) {
-            for (int r = 0; r < m_width; r++) {
+        this.mapData = mapData;
+        width = mapData.GetLength(0);
+        height = mapData.GetLength(1);
+        nodes = new Node[width, height];
+        for (int c = 0; c < height; c++) {
+            for (int r = 0; r < width; r++) {
                 NodeType nodeType = (NodeType)mapData[r, c];
                 Node newNode = new Node(r, c, nodeType);
                 nodes[r, c] = newNode;
@@ -52,15 +52,26 @@ public class Graph : MonoBehaviour {
 
         UpdateDeadAndAlive();
 
-        for (int c = 0; c < m_height; c++) {
-            for (int r = 0; r < m_width; r++) {
+        for (int c = 0; c < height; c++) {
+            for (int r = 0; r < width; r++) {
                 nodes[r, c].neighbors = GetNeighbors(r, c, nodes);
             }
         }
     }
 
+    public void UpdateMapData(int[,] mapData) {
+        this.mapData = mapData;
+        for (int r = 0; r < width; r++) {
+            for (int c = 0; c < height; c++) {
+                NodeType nodeType = (NodeType)mapData[r, c];
+                nodes[r, c].nodeType = nodeType;
+            }
+        }
+        UpdateDeadAndAlive();
+    }
+
     public bool IsWithinBounds(int x, int y) {
-        return x >= 0 && x < m_width && y >= 0 && y < m_height;
+        return x >= 0 && x < width && y >= 0 && y < height;
     }
 
     public List<Node> GetNeighbors(int x, int y, Node[,] nodeArray) {
@@ -79,11 +90,11 @@ public class Graph : MonoBehaviour {
         return neighbors;
     }
 
-    public Graph Copy() {
-        Graph copy = new Graph();
-        copy.Init(m_mapData);
-        return copy;
-    }
+    // public Graph Copy() {
+    //     Graph copy = new Graph();
+    //     copy.Init(mapData);
+    //     return copy;
+    // }
 
     public void UpdateDeadAndAlive() {
         aliveNodes.Clear();
