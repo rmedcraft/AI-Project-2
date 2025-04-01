@@ -1,38 +1,102 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameController : MonoBehaviour {
     public MapData mapData;
     public Graph graph;
-    public Pathfinder pathfinder;
-    public int startx = 0;
-    public int starty = 0;
-    public int goalx = 1;
-    public int goaly = 1;
+    GraphView graphView;
+    int[,] mapCopy;
     public float timeStep = 0.1f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
         if (mapData != null && graph != null) {
             int[,] mapInstance = mapData.MakeMap();
             graph.Init(mapInstance);
-            GraphView graphView = graph.GetComponent<GraphView>();
+            mapCopy = mapData.MakeMap();
+
+            graphView = graph.GetComponent<GraphView>();
             if (graphView != null) {
                 graphView.Init(graph);
             } else {
                 Debug.Log("No graph view is found");
             }
-            if (graph.IsWithinBounds(startx, starty) && graph.IsWithinBounds(goalx, goaly) && pathfinder != null) {
-                Node startNode = graph.nodes[startx, starty];
-                Node goalNode = graph.nodes[goalx, goaly];
-                pathfinder.Init(graph, graphView, startNode, goalNode);
-                StartCoroutine(pathfinder.SearchRoutine(timeStep));
-            } else {
-                Debug.LogWarning("GameController Error: start or end nodes are not in bounds");
-            }
+            ShowColors();
+            // if (graph.IsWithinBounds(startx, starty) && graph.IsWithinBounds(goalx, goaly) && pathfinder != null) {
+            //     Node startNode = graph.nodes[startx, starty];
+            //     Node goalNode = graph.nodes[goalx, goaly];
+            //     pathfinder.Init(graph, graphView, startNode, goalNode);
+            //     StartCoroutine(pathfinder.SearchRoutine(timeStep));
+            // } else {
+            //     Debug.LogWarning("GameController Error: start or end nodes are not in bounds");
+            // }
+            StartCoroutine(GameRoutine(timeStep));
         }
     }
 
-    // Update is called once per frame
-    void Update() {
+    public IEnumerator GameRoutine(float timeStep = 0.1f) {
+        yield return null;
+        // update graphCopy
+        for (int r = 0; r < graph.getWidth(); r++) {
+            for (int c = 0; c < graph.getHeight(); c++) {
+                Node current = graph.nodes[r, c];
+                if (current.CountAliveNeighbors() > 3) {
+                    // graphCopy.nodes[r, c].nodeType = NodeType.dead;
+                    mapCopy[r, c] = (int)NodeType.dead;
+                }
+                if (current.CountAliveNeighbors() == 3) {
+                    // graphCopy.nodes[r, c].nodeType = NodeType.alive;
+                    mapCopy[r, c] = (int)NodeType.alive;
+                }
+                if (current.CountAliveNeighbors() < 3) {
+                    // graphCopy.nodes[r, c].nodeType = NodeType.dead;
+                    mapCopy[r, c] = (int)NodeType.dead;
+                }
+            }
+        }
 
+        // copy graphCopy into graph
+        // graphCopy.UpdateDeadAndAlive();
+        // graph = graphCopy.Copy();
+
+
+        // put mapCopy into graph
+        graph.Init(mapCopy);
+        // mapData. = mapCopy;
+        ShowColors();
+        yield return new WaitForSeconds(timeStep);
+    }
+
+    public void ShowColors() {
+        if (graphView == null) {
+            return;
+        }
+
+        graphView.ColorNodes(graph.aliveNodes, graphView.aliveColor);
+        graphView.ColorNodes(graph.deadNodes, graphView.deadColor);
+
+        // NodeView startNodeView = graphView.nodeViews[start.xIndex, start.yIndex];
+        // NodeView goalNodeView = graphView.nodeViews[goal.xIndex, goal.yIndex];
+
+        // if (frontierNodes != null) {
+        //     graphView.ColorNodes(frontierNodes.ToList(), frontierColor);
+        // }
+        // if (exploreNodes != null) {
+        //     graphView.ColorNodes(exploreNodes, exploreColor);
+        // }
+        // if (pathNodes != null) {
+        //     graphView.ColorNodes(pathNodes, pathColor);
+        // }
+
+        // if (startNodeView != null) {
+        //     startNodeView.ColorNode(startColor);
+        // } else {
+        //     Debug.LogWarning("StartNodeView does not exist");
+        // }
+        // if (goalNodeView != null) {
+        //     goalNodeView.ColorNode(goalColor);
+        // } else {
+        //     Debug.LogWarning("GoalNodeView does not exist");
+        // }
     }
 }

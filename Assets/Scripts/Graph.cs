@@ -10,15 +10,18 @@ public class Graph : MonoBehaviour {
     int m_width = -1;
     int m_height = -1;
 
+    public List<Node> aliveNodes = new List<Node>();
+    public List<Node> deadNodes = new List<Node>();
+
     public static readonly Vector2[] allDirections = {
-        // new Vector2(1f, 1f),
+        new Vector2(1f, 1f),
         new Vector2(1f, 0f),
-        // new Vector2(1f, -1f),
+        new Vector2(1f, -1f),
         new Vector2(0f, 1f),
         new Vector2(0f, -1f),
-        // new Vector2(-1f, 1f),
+        new Vector2(-1f, 1f),
         new Vector2(-1f, 0f),
-        // new Vector2(-1f, -1f),
+        new Vector2(-1f, -1f),
     };
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
@@ -44,18 +47,14 @@ public class Graph : MonoBehaviour {
                 nodes[r, c] = newNode;
                 newNode.position = new Vector3(r, 0, c);
                 Debug.Log("Node (" + newNode.position.x + ", " + newNode.position.z + ")");
-
-                if (nodeType == NodeType.blocked) {
-                    walls.Add(newNode);
-                }
             }
         }
 
+        UpdateDeadAndAlive();
+
         for (int c = 0; c < m_height; c++) {
             for (int r = 0; r < m_width; r++) {
-                if (nodes[r, c].nodeType != NodeType.blocked) {
-                    nodes[r, c].neighbors = GetNeighbors(r, c, nodes);
-                }
+                nodes[r, c].neighbors = GetNeighbors(r, c, nodes);
             }
         }
     }
@@ -72,12 +71,31 @@ public class Graph : MonoBehaviour {
         foreach (Vector2 dir in allDirections) {
             int newX = x + (int)dir.x;
             int newY = y + (int)dir.y;
-            if (IsWithinBounds(newX, newY) && nodeArray[newX, newY] != null && nodeArray[newX, newY].nodeType == NodeType.open) {
+            if (IsWithinBounds(newX, newY) && nodeArray[newX, newY] != null) {
                 neighbors.Add(nodeArray[newX, newY]);
             }
         }
 
-        // Debug.Log("Neighbor count: " + neighbors.Count);
         return neighbors;
+    }
+
+    public Graph Copy() {
+        Graph copy = new Graph();
+        copy.Init(m_mapData);
+        return copy;
+    }
+
+    public void UpdateDeadAndAlive() {
+        aliveNodes.Clear();
+        deadNodes.Clear();
+        foreach (Node n in nodes) {
+            if (n.nodeType == NodeType.alive) {
+                aliveNodes.Add(n);
+            } else if (n.nodeType == NodeType.dead) {
+                deadNodes.Add(n);
+            }
+            // m_mapData[(int)n.position.x, (int)n.position.y] = (int)n.nodeType;
+        }
+
     }
 }

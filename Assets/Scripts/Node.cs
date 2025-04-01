@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum NodeType {
-    open = 0,
-    blocked = 1
+    dead = 0,
+    alive = 1
 }
 
 public class Node {
     // this is a single node in a graph
-    public NodeType nodeType = NodeType.open;
+    public NodeType nodeType = NodeType.dead;
     public int xIndex = -1;
     public int yIndex = -1;
     public Vector3 position;
@@ -24,6 +24,27 @@ public class Node {
 
     public void Reset() {
         prev = null;
+    }
+
+    public int CountAliveNeighbors() {
+        int liveCt = 0;
+        foreach (Node n in neighbors) {
+            if (n.nodeType == NodeType.alive) {
+                liveCt++;
+            }
+        }
+        return liveCt;
+    }
+
+
+    public int CountDeadNeighbors() {
+        int deadCt = 0;
+        foreach (Node n in neighbors) {
+            if (n.nodeType == NodeType.dead) {
+                deadCt++;
+            }
+        }
+        return deadCt;
     }
 }
 
