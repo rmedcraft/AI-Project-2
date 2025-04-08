@@ -7,7 +7,9 @@ public class NodeView : MonoBehaviour {
     public Color deadColor = Color.white;
     public Color aliveColor = Color.yellow;
     Node node;
-    public void Init(Node node) {
+    public GameController gameController;
+
+    public void Init(Node node, GameController gameController) {
         if (tile != null) {
             // gameObject refers to the NodeView gameObject
             // gameObject is kinda like saying this.something() in every other programming language
@@ -17,6 +19,8 @@ public class NodeView : MonoBehaviour {
             tile.transform.localScale = new Vector3(1f - borderSize, 1f, 1f - borderSize);
 
             tile.AddComponent<BoxCollider>();
+
+            this.gameController = gameController;
         } else {
             Debug.LogWarning("Tile does not exist!");
         }
@@ -25,7 +29,8 @@ public class NodeView : MonoBehaviour {
     void Update() {
         // handles click detection for each individual node with a raycaster
         // cant use the OnMouseDown method because we are using tile as the actual nodeview object.
-        if (Input.GetMouseButtonDown(0)) {
+        // you can only change a node state manually if the game is paused
+        if (Input.GetMouseButtonDown(0) && gameController != null && gameController.GetPaused()) {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             // out hit means to store the output in the hit object

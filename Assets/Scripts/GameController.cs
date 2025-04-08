@@ -18,7 +18,7 @@ public class GameController : MonoBehaviour {
 
             graphView = graph.GetComponent<GraphView>();
             if (graphView != null) {
-                graphView.Init(graph);
+                graphView.Init(graph, this);
             } else {
                 Debug.Log("No graph view is found");
             }
@@ -32,9 +32,11 @@ public class GameController : MonoBehaviour {
         while (true) {
             // graph.UpdateDeadAndAlive();
             while (paused) {
+                // foreach loop to update mapcopy when a node is clicked
                 foreach (Node n in graph.nodes) {
                     mapCopy[(int)n.position.x, (int)n.position.z] = (int)n.nodeType;
                 }
+
                 yield return new WaitForSeconds(timeStep);
             }
             for (int r = 0; r < graph.getWidth(); r++) {

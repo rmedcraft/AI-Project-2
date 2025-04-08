@@ -16,6 +16,8 @@ public class Node {
 
     public List<Node> neighbors = new List<Node>();
     public Node prev = null;
+
+
     public Node(int xIndex, int yIndex, NodeType nodeType) {
         this.xIndex = xIndex;
         this.yIndex = yIndex;

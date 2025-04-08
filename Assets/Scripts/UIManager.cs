@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour {
     TextMeshProUGUI buttonText;
     // public TMP_Dropdown dropdown;
     public GameController gameController;
+
     // Use this for initialization
     void Start() {
         buttonText = startButton.GetComponentInChildren<TextMeshProUGUI>();
@@ -20,7 +21,6 @@ public class UIManager : MonoBehaviour {
     void Update() {
 
     }
-
 
     public void StartButtonClicked() {
         if (gameController) {

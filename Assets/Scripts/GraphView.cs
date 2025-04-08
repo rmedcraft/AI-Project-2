@@ -6,7 +6,7 @@ public class GraphView : MonoBehaviour {
     public NodeView[,] nodeViews;
     Graph graph;
 
-    public void Init(Graph graph) {
+    public void Init(Graph graph, GameController gameController) {
         if (graph == null) {
             Debug.LogWarning("Graph does not exist u stupid idiot");
             return;
@@ -20,7 +20,7 @@ public class GraphView : MonoBehaviour {
             NodeView nodeView = instance.GetComponent<NodeView>();
             Debug.Log("Position: " + n.position.x + ", " + n.position.z);
             if (nodeView != null) {
-                nodeView.Init(n);
+                nodeView.Init(n, gameController);
                 nodeViews[n.xIndex, n.yIndex] = nodeView;
                 if (n.nodeType == NodeType.alive) {
                     nodeView.ColorNode(nodeView.aliveColor);
