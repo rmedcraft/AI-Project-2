@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 public class UIManager : MonoBehaviour {
     public GameObject startButton;
-    public TMP_Dropdown dropdown;
+    TextMeshProUGUI buttonText;
+    // public TMP_Dropdown dropdown;
     public GameController gameController;
-    private bool isSearching;
     // Use this for initialization
     void Start() {
-        isSearching = false;
+        buttonText = startButton.GetComponentInChildren<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
@@ -23,21 +23,13 @@ public class UIManager : MonoBehaviour {
 
 
     public void StartButtonClicked() {
-        if (gameController && dropdown) {
-            PatternType s = (PatternType)dropdown.value;
-            if (s != PatternType.None) {
-                // gameController.BeginSearch(s);
-            } else {
-                // dont do anything, maybe put a popup on screen
-                Debug.Log("UIManager Error: Please select a pattern to use");
-            }
+        if (gameController) {
+            gameController.SetPaused(!gameController.GetPaused());
+            buttonText.text = gameController.GetPaused() ? "Play" : "Pause";
+        } else {
+            Debug.Log("UIManager Error: GameController does not exist");
         }
     }
-
-    public void SetSearching(bool isSearching) {
-        this.isSearching = isSearching;
-    }
-
 }
 public enum PatternType {
     None = 0,

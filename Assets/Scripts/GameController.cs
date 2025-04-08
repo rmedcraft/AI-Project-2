@@ -8,6 +8,7 @@ public class GameController : MonoBehaviour {
     GraphView graphView;
     int[,] mapCopy;
     public float timeStep = 0.1f;
+    bool paused = true;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
         if (mapData != null && graph != null) {
@@ -22,22 +23,16 @@ public class GameController : MonoBehaviour {
                 Debug.Log("No graph view is found");
             }
             ShowColors();
-            // if (graph.IsWithinBounds(startx, starty) && graph.IsWithinBounds(goalx, goaly) && pathfinder != null) {
-            //     Node startNode = graph.nodes[startx, starty];
-            //     Node goalNode = graph.nodes[goalx, goaly];
-            //     pathfinder.Init(graph, graphView, startNode, goalNode);
-            //     StartCoroutine(pathfinder.SearchRoutine(timeStep));
-            // } else {
-            //     Debug.LogWarning("GameController Error: start or end nodes are not in bounds");
-            // }
-            StartCoroutine(GameRoutine(timeStep));
+            StartCoroutine(GameRoutine());
         }
     }
-
-    public IEnumerator GameRoutine(float timeStep = 0.1f) {
+    public IEnumerator GameRoutine() {
         yield return null;
         // update graphCopy
         while (true) {
+            while (paused) {
+                yield return new WaitForSeconds(timeStep);
+            }
             for (int r = 0; r < graph.getWidth(); r++) {
                 for (int c = 0; c < graph.getHeight(); c++) {
                     Node current = graph.nodes[r, c];
@@ -59,13 +54,6 @@ public class GameController : MonoBehaviour {
                     }
                 }
             }
-            Debug.Log("here");
-
-            // copy graphCopy into graph
-            // graphCopy.UpdateDeadAndAlive();
-            // graph = graphCopy.Copy();
-
-
             // put mapCopy into graph
             graph.UpdateMapData(mapCopy);
             // mapData. = mapCopy;
@@ -105,5 +93,12 @@ public class GameController : MonoBehaviour {
         // } else {
         //     Debug.LogWarning("GoalNodeView does not exist");
         // }
+    }
+
+    public void SetPaused(bool paused) {
+        this.paused = paused;
+    }
+    public bool GetPaused() {
+        return paused;
     }
 }
