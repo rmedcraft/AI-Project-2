@@ -28,17 +28,19 @@ public class GameController : MonoBehaviour {
     }
     public IEnumerator GameRoutine() {
         yield return null;
-        // update graphCopy
         while (true) {
-            // graph.UpdateDeadAndAlive();
+
+            // stop the game while paused
             while (paused) {
-                // foreach loop to update mapcopy when a node is clicked
+                // foreach loop to update mapCopy when a node is clicked
                 foreach (Node n in graph.nodes) {
                     mapCopy[(int)n.position.x, (int)n.position.z] = (int)n.nodeType;
                 }
 
                 yield return new WaitForSeconds(timeStep);
             }
+
+            // standard game loop
             for (int r = 0; r < graph.getWidth(); r++) {
                 for (int c = 0; c < graph.getHeight(); c++) {
                     Node current = graph.nodes[r, c];
@@ -63,12 +65,18 @@ public class GameController : MonoBehaviour {
             }
             // put mapCopy into graph
             graph.UpdateMapData(mapCopy);
-            // mapData. = mapCopy;
             ShowColors();
             yield return new WaitForSeconds(timeStep);
         }
     }
 
+    public void Clear() {
+        foreach (Node n in graph.nodes) {
+            n.nodeType = NodeType.dead;
+        }
+        graph.UpdateDeadAndAlive();
+        ShowColors();
+    }
     public void ShowColors() {
         if (graphView == null) {
             return;

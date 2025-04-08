@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 
 public class UIManager : MonoBehaviour {
     public GameObject startButton;
-    TextMeshProUGUI buttonText;
+    public GameObject clearButton;
+    TextMeshProUGUI pauseText;
     // public TMP_Dropdown dropdown;
     public GameController gameController;
 
     // Use this for initialization
     void Start() {
-        buttonText = startButton.GetComponentInChildren<TextMeshProUGUI>();
+        pauseText = startButton.GetComponentInChildren<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
@@ -25,9 +26,15 @@ public class UIManager : MonoBehaviour {
     public void StartButtonClicked() {
         if (gameController) {
             gameController.SetPaused(!gameController.GetPaused());
-            buttonText.text = gameController.GetPaused() ? "Play" : "Pause";
+            pauseText.text = gameController.GetPaused() ? "Play" : "Pause";
         } else {
             Debug.Log("UIManager Error: GameController does not exist");
+        }
+    }
+
+    public void ClearButtonClicked() {
+        if (gameController && gameController.GetPaused()) {
+            gameController.Clear();
         }
     }
 }

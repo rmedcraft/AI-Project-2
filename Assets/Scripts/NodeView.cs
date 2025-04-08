@@ -18,6 +18,7 @@ public class NodeView : MonoBehaviour {
             tile.transform.position = node.position;
             tile.transform.localScale = new Vector3(1f - borderSize, 1f, 1f - borderSize);
 
+            // Adds a hitbox to each tile, necessary for click detection
             tile.AddComponent<BoxCollider>();
 
             this.gameController = gameController;
@@ -28,7 +29,7 @@ public class NodeView : MonoBehaviour {
 
     void Update() {
         // handles click detection for each individual node with a raycaster
-        // cant use the OnMouseDown method because we are using tile as the actual nodeview object.
+        // cant use the OnMouseDown method because we are using tile as the nodeview object.
         // you can only change a node state manually if the game is paused
         if (Input.GetMouseButtonDown(0) && gameController != null && gameController.GetPaused()) {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -36,18 +37,8 @@ public class NodeView : MonoBehaviour {
             // out hit means to store the output in the hit object
             if (Physics.Raycast(ray, out hit)) {
                 if (hit.transform.gameObject == tile) {
-                    // NodeType temp = node.nodeType;
-                    // if (temp == NodeType.dead) {
-                    //     node.nodeType = NodeType.alive;
-                    // } else {
-                    //     node.nodeType = NodeType.dead;
-                    // }
                     node.nodeType = (node.nodeType == NodeType.dead) ? NodeType.alive : NodeType.dead;
                     ColorNode(node.nodeType == NodeType.dead ? deadColor : aliveColor);
-
-                    // graph.UpdateDeadAndAlive()
-
-                    Debug.Log("Clicked: " + tile.name);
                 }
             }
         }
