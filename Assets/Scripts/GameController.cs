@@ -30,6 +30,7 @@ public class GameController : MonoBehaviour {
         yield return null;
         // update graphCopy
         while (true) {
+            // graph.UpdateDeadAndAlive();
             while (paused) {
                 yield return new WaitForSeconds(timeStep);
             }
@@ -67,8 +68,8 @@ public class GameController : MonoBehaviour {
             return;
         }
 
-        graphView.ColorNodes(graph.aliveNodes, graphView.aliveColor);
-        graphView.ColorNodes(graph.deadNodes, graphView.deadColor);
+        graphView.ColorNodes(graph.aliveNodes, graphView.nodeViews[0, 0].aliveColor);
+        graphView.ColorNodes(graph.deadNodes, graphView.nodeViews[0, 0].deadColor);
 
         // NodeView startNodeView = graphView.nodeViews[start.xIndex, start.yIndex];
         // NodeView goalNodeView = graphView.nodeViews[goal.xIndex, goal.yIndex];

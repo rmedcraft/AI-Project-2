@@ -3,15 +3,16 @@ using UnityEngine;
 
 public class GraphView : MonoBehaviour {
     public GameObject nodeViewPrefab;
-    public Color deadColor = Color.white;
-    public Color aliveColor = Color.yellow;
     public NodeView[,] nodeViews;
+    Graph graph;
 
     public void Init(Graph graph) {
         if (graph == null) {
             Debug.LogWarning("Graph does not exist u stupid idiot");
             return;
         }
+
+        this.graph = graph;
 
         nodeViews = new NodeView[graph.getWidth(), graph.getHeight()];
         foreach (Node n in graph.nodes) {
@@ -22,9 +23,9 @@ public class GraphView : MonoBehaviour {
                 nodeView.Init(n);
                 nodeViews[n.xIndex, n.yIndex] = nodeView;
                 if (n.nodeType == NodeType.alive) {
-                    nodeView.ColorNode(aliveColor);
+                    nodeView.ColorNode(nodeView.aliveColor);
                 } else {
-                    nodeView.ColorNode(deadColor);
+                    nodeView.ColorNode(nodeView.deadColor);
                 }
             }
         }
@@ -41,6 +42,6 @@ public class GraphView : MonoBehaviour {
         }
     }
 
-    
+
 }
 

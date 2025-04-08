@@ -3,6 +3,9 @@ using UnityEngine;
 public class NodeView : MonoBehaviour {
     public GameObject tile;
     public float borderSize = 0.15f;
+
+    public Color deadColor = Color.white;
+    public Color aliveColor = Color.yellow;
     Node node;
     public void Init(Node node) {
         if (tile != null) {
@@ -12,17 +15,30 @@ public class NodeView : MonoBehaviour {
             tile.name = "Node (" + node.position.x + ", " + node.position.z + ")";
             tile.transform.position = node.position;
             tile.transform.localScale = new Vector3(1f - borderSize, 1f, 1f - borderSize);
+
+            tile.AddComponent<BoxCollider>();
         } else {
             Debug.LogWarning("Tile does not exist!");
         }
     }
 
-    void OnMouseDown() {
-        NodeType temp = node.nodeType;
-        if (temp == NodeType.dead) {
-            node.nodeType = NodeType.alive;
-        } else {
-            node.nodeType = NodeType.dead;
+    void Update() {
+        // handles click detection for each individual node with a raycaster
+        // cant use the OnMouseDown method because we are using tile as the actual nodeview object.
+        if (Input.GetMouseButtonDown(0)) {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            // out hit means to store the output in the hit object
+            if (Physics.Raycast(ray, out hit)) {
+                if (hit.transform.gameObject == tile) {
+                    node.nodeType = (node.nodeType == NodeType.dead) ? NodeType.alive : NodeType.dead;
+                    ColorNode(node.nodeType == NodeType.dead ? deadColor : aliveColor);
+
+                    // graph.UpdateDeadAndAlive()
+
+                    Debug.Log("Clicked: " + tile.name);
+                }
+            }
         }
     }
 

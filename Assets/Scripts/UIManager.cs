@@ -18,7 +18,7 @@ public class UIManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        // update initial state when a 
+
     }
 
 
@@ -30,9 +30,4 @@ public class UIManager : MonoBehaviour {
             Debug.Log("UIManager Error: GameController does not exist");
         }
     }
-}
-public enum PatternType {
-    None = 0,
-    Glider = 1,
-    Oscillator = 2,
 }

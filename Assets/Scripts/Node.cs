@@ -35,17 +35,6 @@ public class Node {
         }
         return liveCt;
     }
-
-
-    public int CountDeadNeighbors() {
-        int deadCt = 0;
-        foreach (Node n in neighbors) {
-            if (n.nodeType == NodeType.dead) {
-                deadCt++;
-            }
-        }
-        return deadCt;
-    }
 }
 
 
