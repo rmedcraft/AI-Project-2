@@ -60,7 +60,6 @@ public class Graph : MonoBehaviour {
     }
 
     public void UpdateMapData(int[,] mapData) {
-        Debug.Log("Updating map data");
         this.mapData = mapData;
         for (int r = 0; r < width; r++) {
             for (int c = 0; c < height; c++) {

@@ -32,6 +32,9 @@ public class GameController : MonoBehaviour {
         while (true) {
             // graph.UpdateDeadAndAlive();
             while (paused) {
+                foreach (Node n in graph.nodes) {
+                    mapCopy[(int)n.position.x, (int)n.position.z] = (int)n.nodeType;
+                }
                 yield return new WaitForSeconds(timeStep);
             }
             for (int r = 0; r < graph.getWidth(); r++) {
@@ -47,6 +50,7 @@ public class GameController : MonoBehaviour {
                     // underpopulation
                     if (current.nodeType == NodeType.alive && liveNeighbors < 2) {
                         // graphCopy.nodes[r, c].nodeType = NodeType.dead;
+                        Debug.Log("Cell: (" + r + ", " + c + ") Live Neighbors: " + liveNeighbors);
                         mapCopy[r, c] = (int)NodeType.dead;
                     }
                     if (current.nodeType == NodeType.dead && liveNeighbors == 3) {

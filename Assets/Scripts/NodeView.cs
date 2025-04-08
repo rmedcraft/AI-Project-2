@@ -31,6 +31,12 @@ public class NodeView : MonoBehaviour {
             // out hit means to store the output in the hit object
             if (Physics.Raycast(ray, out hit)) {
                 if (hit.transform.gameObject == tile) {
+                    // NodeType temp = node.nodeType;
+                    // if (temp == NodeType.dead) {
+                    //     node.nodeType = NodeType.alive;
+                    // } else {
+                    //     node.nodeType = NodeType.dead;
+                    // }
                     node.nodeType = (node.nodeType == NodeType.dead) ? NodeType.alive : NodeType.dead;
                     ColorNode(node.nodeType == NodeType.dead ? deadColor : aliveColor);
 
