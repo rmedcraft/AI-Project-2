@@ -217,7 +217,10 @@ MonoBehaviour:
     - m_Text: Glider
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: Oscillator
+    - m_Text: Blinkers
+      m_Image: {fileID: 0}
+      m_Color: {r: 1, g: 1, b: 1, a: 1}
+    - m_Text: Checkerboard
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_OnValueChanged:
@@ -1624,7 +1627,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startButton: {fileID: 2004345436}
   gameController: {fileID: 580853933}
-  presetDropdown: {fileID: 0}
+  presetDropdown: {fileID: 104953395}
 --- !u!1 &1072376834
 GameObject:
   m_ObjectHideFlags: 0

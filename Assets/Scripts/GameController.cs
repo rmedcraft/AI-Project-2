@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class GameController : MonoBehaviour {
@@ -7,8 +8,10 @@ public class GameController : MonoBehaviour {
     public Graph graph;
     GraphView graphView;
     int[,] mapCopy;
-    float timeStep = 0.1f;
+    float timeStep = 0.25f;
     bool paused = true;
+    TextAsset mapText;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
         if (mapData != null && graph != null) {
@@ -65,6 +68,7 @@ public class GameController : MonoBehaviour {
             // put mapCopy into graph
             graph.UpdateMapData(mapCopy);
             ShowColors();
+            Debug.Log(timeStep);
             yield return new WaitForSeconds(timeStep);
         }
     }
@@ -94,5 +98,57 @@ public class GameController : MonoBehaviour {
 
     public void UpdateSpeed(float timeStep) {
         this.timeStep = timeStep;
+    }
+
+    public void ApplyPreset(Preset p) {
+        List<string> preset = new List<string>();
+        if (p == Preset.Glider) {
+            preset = new List<string>{  "000000000000",
+                                        "000100000000",
+                                        "010100000000",
+                                        "001100000000",
+                                        "000000000000",
+                                        "000000000000",
+                                        "000000000000"};
+        } else if (p == Preset.Blinkers) {
+            preset = new List<string>{  "000000000000",
+                                        "011101110000",
+                                        "000000000010",
+                                        "000000000010",
+                                        "000000000010",
+                                        "011101110000",
+                                        "000000000000"};
+        } else if (p == Preset.Checkerboard) {
+            preset = new List<string>{  "101010101010",
+                                        "010101010101",
+                                        "101010101010",
+                                        "010101010101",
+                                        "101010101010",
+                                        "010101010101",
+                                        "101010101010"};
+        }
+
+
+        for (int r = 0; r < preset.Count; r++) {
+            for (int c = 0; c < preset[0].Length; c++) {
+                int nodeType = preset[r][c] - '0';
+                graph.nodes[c, r].nodeType = (NodeType)nodeType;
+            }
+        }
+
+        graph.UpdateDeadAndAlive();
+        ShowColors();
+    }
+
+    public List<string> GetTextFromFile(string path) {
+        List<string> line = new List<string>();
+        if (path != null) {
+            StreamReader reader = new StreamReader(path);
+            string str;
+            while ((str = reader.ReadLine()) != null) {
+                line.Add(str);
+            }
+        }
+        return line;
     }
 }

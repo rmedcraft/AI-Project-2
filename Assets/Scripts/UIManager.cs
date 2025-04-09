@@ -41,12 +41,17 @@ public class UIManager : MonoBehaviour {
     }
 
     public void ApplyPreset() {
-
+        if (presetDropdown && gameController.GetPaused()) {
+            if (presetDropdown.value != (int)Preset.None) {
+                gameController.ApplyPreset((Preset)presetDropdown.value);
+            }
+        }
     }
 }
 
-enum Presets {
+public enum Preset {
     None = 0,
     Glider = 1,
-    Oscillator = 2
+    Blinkers = 2,
+    Checkerboard = 3,
 }

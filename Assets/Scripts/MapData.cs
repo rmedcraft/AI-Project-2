@@ -9,7 +9,7 @@ public class MapData : MonoBehaviour {
 
     public TextAsset text;
 
-    public List<string> getTextFromFile(TextAsset text) {
+    public List<string> GetTextFromFile(TextAsset text) {
         List<string> line = new List<string>();
         if (text != null) {
             string textData = text.text;
@@ -19,11 +19,11 @@ public class MapData : MonoBehaviour {
         return line;
     }
 
-    public List<string> getTextFromFile() {
-        return getTextFromFile(text);
+    public List<string> GetTextFromFile() {
+        return GetTextFromFile(text);
     }
 
-    public void getDimensions(List<string> textLines) {
+    public void GetDimensions(List<string> textLines) {
         height = textLines.Count();
         foreach (string line in textLines) {
             width = line.Length;
@@ -37,8 +37,8 @@ public class MapData : MonoBehaviour {
 
     // syntax for making a 2D array
     public int[,] MakeMap() {
-        List<string> lines = getTextFromFile();
-        getDimensions(lines);
+        List<string> lines = GetTextFromFile();
+        GetDimensions(lines);
         int[,] map = new int[width, height];
         for (int r = 0; r < width; r++) {
             for (int c = 0; c < height; c++) {
