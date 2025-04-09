@@ -4,8 +4,8 @@ using System.Linq;
 using UnityEngine;
 
 public class MapData : MonoBehaviour {
-    public int height = 5;
-    public int width = 5;
+    int height = 5;
+    int width = 5;
 
     public TextAsset text;
 

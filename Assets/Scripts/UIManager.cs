@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System;
 using TMPro;
 using System.Threading.Tasks;
+using UnityEngine.UI;
 // detecting mouse clicks: https://learn.unity.com/tutorial/onmousedown#
 
 public class UIManager : MonoBehaviour {
     public GameObject startButton;
     public GameObject clearButton;
+    public Slider speedSlider;
     TextMeshProUGUI pauseText;
     // public TMP_Dropdown dropdown;
     public GameController gameController;
@@ -35,6 +37,12 @@ public class UIManager : MonoBehaviour {
     public void ClearButtonClicked() {
         if (gameController && gameController.GetPaused()) {
             gameController.Clear();
+        }
+    }
+
+    public void OnSliderMove() {
+        if (speedSlider) {
+            gameController.UpdateSpeed(speedSlider.value);
         }
     }
 }

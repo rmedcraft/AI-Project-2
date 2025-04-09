@@ -7,7 +7,7 @@ public class GameController : MonoBehaviour {
     public Graph graph;
     GraphView graphView;
     int[,] mapCopy;
-    public float timeStep = 0.1f;
+    float timeStep = 0.1f;
     bool paused = true;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
@@ -84,30 +84,6 @@ public class GameController : MonoBehaviour {
 
         graphView.ColorNodes(graph.aliveNodes, graphView.nodeViews[0, 0].aliveColor);
         graphView.ColorNodes(graph.deadNodes, graphView.nodeViews[0, 0].deadColor);
-
-        // NodeView startNodeView = graphView.nodeViews[start.xIndex, start.yIndex];
-        // NodeView goalNodeView = graphView.nodeViews[goal.xIndex, goal.yIndex];
-
-        // if (frontierNodes != null) {
-        //     graphView.ColorNodes(frontierNodes.ToList(), frontierColor);
-        // }
-        // if (exploreNodes != null) {
-        //     graphView.ColorNodes(exploreNodes, exploreColor);
-        // }
-        // if (pathNodes != null) {
-        //     graphView.ColorNodes(pathNodes, pathColor);
-        // }
-
-        // if (startNodeView != null) {
-        //     startNodeView.ColorNode(startColor);
-        // } else {
-        //     Debug.LogWarning("StartNodeView does not exist");
-        // }
-        // if (goalNodeView != null) {
-        //     goalNodeView.ColorNode(goalColor);
-        // } else {
-        //     Debug.LogWarning("GoalNodeView does not exist");
-        // }
     }
 
     public void SetPaused(bool paused) {
@@ -115,5 +91,9 @@ public class GameController : MonoBehaviour {
     }
     public bool GetPaused() {
         return paused;
+    }
+
+    public void UpdateSpeed(float timeStep) {
+        this.timeStep = timeStep;
     }
 }
