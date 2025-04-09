@@ -54,7 +54,6 @@ public class GameController : MonoBehaviour {
                     // underpopulation
                     if (current.nodeType == NodeType.alive && liveNeighbors < 2) {
                         // graphCopy.nodes[r, c].nodeType = NodeType.dead;
-                        Debug.Log("Cell: (" + r + ", " + c + ") Live Neighbors: " + liveNeighbors);
                         mapCopy[r, c] = (int)NodeType.dead;
                     }
                     if (current.nodeType == NodeType.dead && liveNeighbors == 3) {

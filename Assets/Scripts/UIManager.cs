@@ -9,11 +9,11 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
     public GameObject startButton;
-    public GameObject clearButton;
-    public Slider speedSlider;
     TextMeshProUGUI pauseText;
     // public TMP_Dropdown dropdown;
     public GameController gameController;
+
+    public TMP_Dropdown presetDropdown;
 
     // Use this for initialization
     void Start() {
@@ -40,9 +40,13 @@ public class UIManager : MonoBehaviour {
         }
     }
 
-    public void OnSliderMove() {
-        if (speedSlider) {
-            gameController.UpdateSpeed(speedSlider.value);
-        }
+    public void ApplyPreset() {
+
     }
+}
+
+enum Presets {
+    None = 0,
+    Glider = 1,
+    Oscillator = 2
 }
