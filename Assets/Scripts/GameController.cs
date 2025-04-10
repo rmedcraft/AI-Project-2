@@ -68,7 +68,7 @@ public class GameController : MonoBehaviour {
             // put mapCopy into graph
             graph.UpdateMapData(mapCopy);
             ShowColors();
-            Debug.Log(timeStep);
+
             yield return new WaitForSeconds(timeStep);
         }
     }
