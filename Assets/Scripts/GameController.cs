@@ -77,14 +77,17 @@ public class GameController : MonoBehaviour {
         foreach (Node n in graph.nodes) {
             n.nodeType = NodeType.dead;
         }
-        graph.UpdateDeadAndAlive();
         ShowColors();
     }
     public void ShowColors() {
-        if (graphView == null) {
+        if (graphView == null || graph == null) {
             return;
         }
 
+        // updates the graph.aliveNodes and graph.deadNodes lists
+        graph.UpdateDeadAndAlive();
+
+        // color dead and alive nodes
         graphView.ColorNodes(graph.aliveNodes, graphView.nodeViews[0, 0].aliveColor);
         graphView.ColorNodes(graph.deadNodes, graphView.nodeViews[0, 0].deadColor);
     }
@@ -96,17 +99,15 @@ public class GameController : MonoBehaviour {
         return paused;
     }
 
-    public void UpdateSpeed(float timeStep) {
-        this.timeStep = timeStep;
-    }
-
     public void ApplyPreset(Preset p) {
         List<string> preset = new List<string>();
+
+        // sets the value of the preset list based on the value from the dropdown
         if (p == Preset.Glider) {
             preset = new List<string>{  "000000000000",
-                                        "000100000000",
-                                        "010100000000",
-                                        "001100000000",
+                                        "000100000100",
+                                        "010100010100",
+                                        "001100001100",
                                         "000000000000",
                                         "000000000000",
                                         "000000000000"};
@@ -126,29 +127,26 @@ public class GameController : MonoBehaviour {
                                         "101010101010",
                                         "010101010101",
                                         "101010101010"};
+        } else if (p == Preset.Random) {
+            // fills the board with random values
+            for (int r = 0; r < 7; r++) {
+                string temp = "";
+                for (int c = 0; c < 12; c++) {
+                    temp += Random.Range(0, 2);
+                }
+                preset.Add(temp);
+            }
         }
 
-
+        // updates the nodetypes of every node in the graph
         for (int r = 0; r < preset.Count; r++) {
             for (int c = 0; c < preset[0].Length; c++) {
-                int nodeType = preset[r][c] - '0';
+                int nodeType = preset[r][c] - '0'; // subtracting the char '0' converts a char to an int
                 graph.nodes[c, r].nodeType = (NodeType)nodeType;
             }
         }
 
-        graph.UpdateDeadAndAlive();
+        // show the changed colors
         ShowColors();
-    }
-
-    public List<string> GetTextFromFile(string path) {
-        List<string> line = new List<string>();
-        if (path != null) {
-            StreamReader reader = new StreamReader(path);
-            string str;
-            while ((str = reader.ReadLine()) != null) {
-                line.Add(str);
-            }
-        }
-        return line;
     }
 }

@@ -18,6 +18,6 @@ After running the game, you can click squares to toggle them between alive and d
 
 Click the play button to run Game of Life. Click this button to toggle between playing and paused
 
-Use the preset dropdown to select a preset for an interesting pattern, click the apply preset button when the game is paused to apply the preset to the game board.
+Use the preset dropdown to select a preset for an interesting pattern, click the apply preset button when the game is paused to apply the preset to the game board. This also includes filling the board with alive & dead cells randomly
 
 Clear the board by clicking the clear button while the game is paused.

@@ -54,4 +54,5 @@ public enum Preset {
     Glider = 1,
     Blinkers = 2,
     Checkerboard = 3,
+    Random = 4,
 }
